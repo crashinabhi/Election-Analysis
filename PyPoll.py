@@ -49,7 +49,7 @@ file_to_load = 'election_results.csv'
 # Assign a variable to save the file to a path.
 file_to_save = os.path.join("analysis", "election_analysis.txt")
 
-# 1. Initialize a total vot counter
+# 1. Initialize a total vote counter
 total_votes = 0
 
 # Candidate Options
@@ -87,35 +87,57 @@ with open(file_to_load) as election_data:
         # Add a vote to that candidate's count.
         candidates_votes[candidate_name] += 1
 
-# Determine the percentage of votes for each candidate by looping through the counts.
-# 1. Iterate the candidates list
-for candidate_name in candidates_votes:
-    # 2. retrieve the vote count of a candidate.
-    votes = candidates_votes[candidate_name]
-    # 3. Calculate the percentage of votes.
-    vote_percentage = float(votes) / float(total_votes) * 100
-    # To do: print out each candidate's name, vote count, and percentage of
-    # votes to the terminal.
-    print(f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+# Save the results to our text file.
+with open(file_to_save, "w") as txt_file:
 
-    # Determine winning vote count and candidate
-    # 1. Determine if the votes are greater than the winning count.
-    if (votes > winning_count) and (vote_percentage > winning_percentage):
-        # 2. If true then set winning_count = votes and winning_percent = vote_percentage.
-        winning_count = votes
-        winning_percentage = vote_percentage
-        # 3. Set the winning_candidate equal to the candidates name.
-        winning_candidate = candidate_name
+# Print the final vote count to the terminal.
+    election_result = (
+        f"\nElection Result\n"
+        f"-------------------------\n"
+        f"Total Votes: {total_votes:,}\n"
+        f"-------------------------\n"
+    )
+    print(election_result, end="")
 
-#  To do: print out the winning candidate, vote count and percentage to
-#   terminal.
-winning_candidate_summary = (
-    f"-------------------------\n"
-    f"Winner: {winning_candidate}\n"
-    f"Winning Vote Count: {winning_count:,}\n"
-    f"Winning Percentage: {winning_percentage:.1f}%\n"
-    f"-------------------------\n")
-print(winning_candidate_summary)
+    # Save the final vote count to the text file.
+    txt_file.write(election_result)
+
+    # Determine the percentage of votes for each candidate by looping through the counts.
+    # 1. Iterate the candidates list
+    for candidate_name in candidates_votes:
+        # 2. retrieve the vote count of a candidate.
+        votes = candidates_votes[candidate_name]
+        # 3. Calculate the percentage of votes.
+        vote_percentage = float(votes) / float(total_votes) * 100
+        # To do: print out each candidate's name, vote count, and percentage of
+        # votes to the terminal.
+        candidate_results = (f"{candidate_name}: {vote_percentage:.1f}% ({votes:,})\n")
+        # Print each candidate, their voter count, and percentage to the terminal.
+        print(candidate_results)
+        #  Save the candidate results to our text file.
+        txt_file.write(candidate_results)
+
+        # Determine winning vote count and candidate
+        # 1. Determine if the votes are greater than the winning count.
+        if (votes > winning_count) and (vote_percentage > winning_percentage):
+            # 2. If true then set winning_count = votes and winning_percent = vote_percentage.
+            winning_count = votes
+            winning_percentage = vote_percentage
+            # 3. Set the winning_candidate equal to the candidates name.
+            winning_candidate = candidate_name
+
+    #  To do: print out the winning candidate, vote count and percentage to
+    #   terminal.
+    winning_candidate_summary = (
+        f"-------------------------\n"
+        f"Winner: {winning_candidate}\n"
+        f"Winning Vote Count: {winning_count:,}\n"
+        f"Winning Percentage: {winning_percentage:.1f}%\n"
+        f"-------------------------\n")
+    print(winning_candidate_summary)
+    # Save the winning candidate's name to the text file.
+    txt_file.write(winning_candidate_summary)
+    
 
 
 
